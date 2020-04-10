@@ -16,7 +16,8 @@
         #output {
             border: 1px solid rgb(142, 142, 142);
         }
-        .box{
+
+        .box {
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -37,13 +38,19 @@
             const input = $('#input').val().split(/\n/)
             const api_key = ''
             input.forEach((i, index) => {
-                $.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${i}&key=${api_key}`,(response) => {
-                    try{
-                        $('#output').append(JSON.stringify({address:i , ...response.results[0].geometry.location})).append(',<br/>')
-                    }catch(err){
-                        alert('發生錯誤')
+                if (i.length > 0) {
+                    setTimeout(function () {
+                        $.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${i}&key=${api_key}`, (response) => {
+                            try {
+                                $('#output').append(JSON.stringify({ address: i, ...response.results[0].geometry.location })).append(',<br/>')
+                            } catch (err) {
+                                console.log(err)
+                                alert('發生錯誤')
+                            }
+                        })
                     }
-                })
+                        , 100 * index)
+                }
             })
         })
     </script>
