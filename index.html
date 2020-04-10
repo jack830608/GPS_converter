@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS converter</title>
+    <script type="text/javascript" src="//tw-img.vpon.com/img/js/jquery-1.12.4.min.js"></script>
+    <style>
+        #input,
+        #output {
+            height: 90vh;
+            width: 43vw;
+        }
+
+        #output {
+            border: 1px solid rgb(142, 142, 142);
+        }
+        .box{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            overflow: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <textarea id="input" placeholder="新北市淡水區中正路110號&#13;&#10;台北市士林區大北路38號&#13;&#10;&#13;&#10;每個地址請用空行隔開"></textarea>
+        <button id="confirm">確認轉換</button>
+        <div id="output">output</div>
+    </div>
+    <script>
+        $('#confirm').click((e) => {
+            $('#output').html('')
+            const input = $('#input').val().split(/\n/)
+            const api_key = ''
+            input.forEach((i, index) => {
+                $.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${i}&key=${api_key}`,(response) => {
+                    try{
+                        $('#output').append(JSON.stringify({address:i , ...response.results[0].geometry.location})).append(',<br/>')
+                    }catch(err){
+                        alert('發生錯誤')
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
