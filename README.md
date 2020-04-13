@@ -1,4 +1,4 @@
-# node.js + express + HTML + javascript + jQuery
+# node.js + express
 
 This project requires [Node.js](https://nodejs.org/) v10+ to run. 
 

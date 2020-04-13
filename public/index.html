@@ -36,7 +36,7 @@
         $('#confirm').click((e) => {
             $('#output').html('')
             const input = $('#input').val()
-            $.post('/convert', {data:input}, (data) => {
+            $.post(`${window.location.origin}/convert`, {data:input}, (data) => {
                 console.log(data)
                 data = data.replace(/},/g,'},<br/>')
                 data = data.replace("[","").replace("]","")

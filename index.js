@@ -9,24 +9,22 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.post('/convert', function (req, res) {
     const data = []
-    const input = req.body.data.split(/\n/g)
+    const input = req.body.data.split(/\n/g).filter(n => n)
     input.forEach((i, index) => {
         setTimeout(function () {
-            if (i.length > 0) {
-                const address = encodeURI(i)
-                axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`)
-                    .then((response) => {
-                        try {
-                            data.push({ address: i, ...response.data.results[0].geometry.location })
-                            if (index === input.length -1 ) {
-                                console.log(data)
-                                res.send(JSON.stringify(data))
-                            }
-                        } catch (err) {
-                            console.log(err)
+            const address = encodeURI(i)
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`)
+                .then((response) => {
+                    try {
+                        data.push({ address: i, ...response.data.results[0].geometry.location })
+                        if (index === input.length - 1) {
+                            console.log(data)
+                            res.send(JSON.stringify(data))
                         }
-                    })
-            }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
         }, 100 * index)
     })
 });
